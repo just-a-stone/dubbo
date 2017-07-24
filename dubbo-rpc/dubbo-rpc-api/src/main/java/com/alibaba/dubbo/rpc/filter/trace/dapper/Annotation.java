@@ -10,27 +10,25 @@ public class Annotation implements Serializable {
 
     // 时间戳
     private Long timestamp;
-    // annotation类型
-    private AnnotationType type;
+    private String value;
     // endpoint
     private EndPoint endPoint;
-    // 耗时
-    private Integer duration;
 
-    public Annotation(Long timestamp, AnnotationType type, EndPoint endPoint, Integer duration) {
+    public Annotation() {
+    }
+
+    public Annotation(Long timestamp, String value, EndPoint endPoint) {
         this.timestamp = timestamp;
-        this.type = type;
+        this.value = value;
         this.endPoint = endPoint;
-        this.duration = duration;
     }
 
     @Override
     public String toString() {
         return "Annotation{" +
                 "timestamp=" + timestamp +
-                ", type=" + type +
+                ", value='" + value + '\'' +
                 ", endPoint=" + endPoint +
-                ", duration=" + duration +
                 '}';
     }
 
@@ -41,19 +39,16 @@ public class Annotation implements Serializable {
 
         Annotation that = (Annotation) o;
 
-        if (!timestamp.equals(that.timestamp)) return false;
-        if (type != that.type) return false;
-        if (!endPoint.equals(that.endPoint)) return false;
-        return duration.equals(that.duration);
-
+        if (timestamp != null ? !timestamp.equals(that.timestamp) : that.timestamp != null) return false;
+        if (value != null ? !value.equals(that.value) : that.value != null) return false;
+        return endPoint != null ? endPoint.equals(that.endPoint) : that.endPoint == null;
     }
 
     @Override
     public int hashCode() {
-        int result = timestamp.hashCode();
-        result = 31 * result + type.hashCode();
-        result = 31 * result + endPoint.hashCode();
-        result = 31 * result + duration.hashCode();
+        int result = timestamp != null ? timestamp.hashCode() : 0;
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        result = 31 * result + (endPoint != null ? endPoint.hashCode() : 0);
         return result;
     }
 
@@ -65,12 +60,12 @@ public class Annotation implements Serializable {
         this.timestamp = timestamp;
     }
 
-    public AnnotationType getType() {
-        return type;
+    public String getValue() {
+        return value;
     }
 
-    public void setType(AnnotationType type) {
-        this.type = type;
+    public void setValue(String value) {
+        this.value = value;
     }
 
     public EndPoint getEndPoint() {
@@ -81,11 +76,4 @@ public class Annotation implements Serializable {
         this.endPoint = endPoint;
     }
 
-    public Integer getDuration() {
-        return duration;
-    }
-
-    public void setDuration(Integer duration) {
-        this.duration = duration;
-    }
 }
