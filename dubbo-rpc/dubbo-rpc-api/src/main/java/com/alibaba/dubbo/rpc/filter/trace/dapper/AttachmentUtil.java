@@ -8,33 +8,33 @@ import com.alibaba.dubbo.rpc.RpcInvocation;
  */
 public class AttachmentUtil {
 
-    /**
-     * 附带数据转long
-     *
-     * @param invocation
-     * @param key
-     * @return
-     */
-    public static Long getAttachmentLong(RpcInvocation invocation, String key) {
-        String value = invocation.getAttachment(key);
-        if (StringUtils.isBlank(value)) {
-            return null;
-        }
-        return Long.valueOf(value);
-    }
+	/**
+	 * 附带数据转long
+	 *
+	 * @param invocation
+	 * @param key
+	 * @return
+	 */
+	public static String getAttachment(RpcInvocation invocation, String key) {
+		String value = invocation.getAttachment(key);
+		if (StringUtils.isBlank(value)) {
+			return null;
+		}
+		return value;
+	}
 
-    /**
-     * 附带数据转boolean
-     *
-     * @param invocation
-     * @param key
-     * @return
-     */
-    public static Boolean getAttachmentBoolean(RpcInvocation invocation, String key) {
-        String value = invocation.getAttachment(key);
-        if (StringUtils.isBlank(value)) {
-            return false;
-        }
-        return Boolean.valueOf(value);
-    }
+	/**
+	 * 附带数据转boolean
+	 *
+	 * @param invocation
+	 * @param key
+	 * @return
+	 */
+	public static Boolean getAttachmentBoolean(RpcInvocation invocation, String key) {
+		String value = invocation.getAttachment(key);
+		if (StringUtils.isBlank(value)) {
+			return false;
+		}
+		return Boolean.valueOf(value);
+	}
 }

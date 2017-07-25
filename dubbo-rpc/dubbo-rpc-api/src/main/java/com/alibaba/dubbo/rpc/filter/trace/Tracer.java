@@ -21,9 +21,6 @@ public class Tracer {
     private static volatile Tracer tracer;
     private Sampler sampler = new PercentageSampler();
 
-    private static final String SPAN_GENERATER_URL = "http://localhost:8889/id/span";
-    private static final String TRACE_GENERATER_URL = "http://localhost:8889/id/trace";
-
     // 保证单例
     private Tracer() {
 
@@ -77,7 +74,7 @@ public class Tracer {
      * @param serviceId
      * @return
      */
-    public Span buildSpan(Long traceId, Long parentId, Long id, String name, boolean isSample, String serviceId) {
+    public Span buildSpan(String traceId, String parentId, String id, String name, boolean isSample, String serviceId) {
         Span span = new Span();
         span.setId(id);
         span.setParentId(parentId);
@@ -129,8 +126,8 @@ public class Tracer {
      * @return
      * @TODO 生成全局唯一的id
      */
-    public Long generateSpanId() {
-        return random.nextLong();
+    public String generateSpanId() {
+        return UniqueIdGen.getInstance().nextId();
     }
 
     /**
@@ -139,8 +136,8 @@ public class Tracer {
      * @return
      * @TODO 生成全局唯一的id
      */
-    public Long generateTraceId() {
-        return random.nextLong();
+    public String generateTraceId() {
+        return UniqueIdGen.getInstance().nextId();
     }
 
     public void clientSend(Span span, EndPoint endPoint, long start) {
