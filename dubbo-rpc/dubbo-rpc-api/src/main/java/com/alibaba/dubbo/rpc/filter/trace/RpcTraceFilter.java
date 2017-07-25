@@ -30,7 +30,6 @@ public class RpcTraceFilter implements Filter {
         EndPoint endPoint = tracer.buildEndPoint(rpcContext.getLocalAddressString(), rpcContext.getLocalPort(), serviceId);
 
         Span span = null;
-        System.out.println("what happened ?");
         try {
             if (isConsumerSide) {
                 logger.debug("消费者");
@@ -47,8 +46,8 @@ public class RpcTraceFilter implements Filter {
             } else if (isProviderSide) {
                 logger.debug("生产者");
                 Long traceId = AttachmentUtil.getAttachmentLong(invocation1, Constants.TRACE_ID);
-                Long parentId = AttachmentUtil.getAttachmentLong(invocation1, Constants.PARENT_ID);
-                Long spanId = AttachmentUtil.getAttachmentLong(invocation1, Constants.SPAN_ID);
+                Long parentId = AttachmentUtil.getAttachmentLong(invocation1, Constants.SPAN_ID);
+                Long spanId = Tracer.getInstance().generateSpanId();
                 boolean isSample = traceId != null;
 
                 span = tracer.buildSpan(traceId, parentId, spanId, methodName, isSample, serviceId);
@@ -104,8 +103,8 @@ public class RpcTraceFilter implements Filter {
                 //server send
                 tracer.serverSend(span, endPoint, end);
             }
-            tracer.removeParentSpan();
         }
+        tracer.removeParentSpan();
     }
 
     private void invokeBefore(Span span, EndPoint endPoint, long start, boolean isConsumerSide, boolean isProviderSide) {
@@ -118,8 +117,8 @@ public class RpcTraceFilter implements Filter {
                 //server receive
                 tracer.serverReceive(span, endPoint, start);
             }
-            tracer.setParentSpan(span);
         }
+        tracer.setParentSpan(span);
     }
 
     /**
