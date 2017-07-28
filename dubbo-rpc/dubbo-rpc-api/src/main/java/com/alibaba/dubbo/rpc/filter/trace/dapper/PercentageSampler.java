@@ -1,5 +1,7 @@
 package com.alibaba.dubbo.rpc.filter.trace.dapper;
 
+import brave.sampler.Sampler;
+
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -10,31 +12,36 @@ import java.util.concurrent.atomic.AtomicLong;
  * <p>
  * Created by shield on 2017/7/24.
  */
-public class PercentageSampler implements Sampler {
+public class PercentageSampler extends Sampler {
 
-	private AtomicLong count = new AtomicLong();
-	private int levelOne = 100;
-	private int levelTwo = 500;
-	private Long lastTime = -1L;
+    private AtomicLong count = new AtomicLong();
+    private int levelOne = 100;
+    private int levelTwo = 500;
+    private Long lastTime = -1L;
 
-	public boolean isCollect() {
-		boolean isSample = true;
-		long n = count.incrementAndGet();
-		if (System.currentTimeMillis() - lastTime < 1000) {
-			if (n > levelOne && n < levelTwo) {
-				if (n % 2 != 0)
-					isSample = false;
-			}
-			if (n > levelTwo) {
-				if (n % 10 != 0) {
-					isSample = false;
-				}
-			}
-		} else {
-			count.getAndAdd(0);
-			lastTime = System.currentTimeMillis();
-		}
+    public boolean isCollect() {
+        boolean isSample = true;
+        long n = count.incrementAndGet();
+        if (System.currentTimeMillis() - lastTime < 1000) {
+            if (n > levelOne && n < levelTwo) {
+                if (n % 2 != 0)
+                    isSample = false;
+            }
+            if (n > levelTwo) {
+                if (n % 10 != 0) {
+                    isSample = false;
+                }
+            }
+        } else {
+            count.getAndAdd(0);
+            lastTime = System.currentTimeMillis();
+        }
 
-		return isSample;
-	}
+        return isSample;
+    }
+
+    @Override
+    public boolean isSampled(long l) {
+        return isCollect();
+    }
 }
