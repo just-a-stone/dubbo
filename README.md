@@ -11,3 +11,8 @@
         <property name="target" value="http://127.0.0.1:9411/api/v1/spans"/>
 </bean>
 ```
+---
+默认按百分比采样：
+* 0-100/s 100%
+* 101-500/s 50%
+* 501- /s 10%
