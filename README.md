@@ -1,3 +1,7 @@
+## 使用分支rpc-zipkin
+
+## 设计方案
+参考dapper数据结构设计，通过切入dubbo的filter，采集信息发送zipkin分析展示
 
 ## xml配置
 
